@@ -1,17 +1,10 @@
-
 FROM eclipse-temurin:27-jdk AS build
 
 WORKDIR /app
 
-COPY .mvn/ .mvn/
-COPY mvnw pom.xml ./
+COPY . .
 
-RUN chmod +x mvnw
-RUN ./mvnw -DskipTests package
-
-COPY src/ src/
-
-RUN ./mvnw -DskipTests package
+RUN chmod +x mvnw && ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:27-jre
 
