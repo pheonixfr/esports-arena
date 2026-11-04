@@ -2,8 +2,9 @@ FROM eclipse-temurin:27-jdk AS build
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y maven
+RUN apt-get update && apt-get install -y maven && mkdir -p /root/.m2
 
+COPY settings.xml /root/.m2/settings.xml
 COPY pom.xml .
 COPY src ./src
 
