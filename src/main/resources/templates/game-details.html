@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${game.name} + ' | eSports Arena'">Game Details | eSports Arena</title>
+
+    <style>
+        :root {
+            --primary: #5b5cf0;
+            --dark: #171a2b;
+            --muted: #777e95;
+            --background: #f7f8fc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--dark);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 8%;
+            background: white;
+            border-bottom: 1px solid #edf0fa;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        nav a {
+            margin-left: 22px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 25px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .game-panel {
+            padding: 30px;
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 25px;
+            box-shadow: 0 10px 35px #53618a08;
+        }
+
+        .game-banner {
+            width: 100%;
+            height: 340px;
+            display: block;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 18px;
+            margin-bottom: 35px;
+            background: #eeeeff;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 8px 13px;
+            background: #eeeeff;
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: clamp(30px, 5vw, 46px);
+            margin-bottom: 18px;
+        }
+
+        .description {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .roles-section {
+            margin: 35px 0;
+        }
+
+        .roles-section h2,
+        .tournaments-section h2 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .roles-subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .role-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .role-list span {
+            padding: 10px 14px;
+            background: #eeeeff;
+            color: var(--primary);
+            border: 1px solid #dedfff;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* TOURNAMENT SECTION */
+
+        .tournaments-section {
+            margin-top: 45px;
+            padding-top: 30px;
+            border-top: 1px solid #edf0fa;
+        }
+
+        .tournament-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .tournament-card {
+            padding: 20px;
+            border: 1px solid #edf0fa;
+            border-radius: 15px;
+            background: #fafaff;
+        }
+
+        .tournament-card h3 {
+            font-size: 17px;
+            margin-bottom: 14px;
+        }
+
+        .tournament-info {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 2;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #eeeeff;
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .tournament-link {
+            display: inline-block;
+            margin-top: 16px;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .tournament-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-message {
+            margin-top: 20px;
+            padding: 25px;
+            background: #fafaff;
+            border: 1px dashed #d9dcf0;
+            border-radius: 12px;
+            color: var(--muted);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 13px 20px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .button.secondary {
+            background: #eeeeff;
+            color: var(--primary);
+        }
+
+        .button:hover {
+            opacity: 0.88;
+        }
+
+        footer {
+            margin-top: 70px;
+            padding: 25px 8%;
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+            background: white;
+            border-top: 1px solid #edf0fa;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px 5%;
+                flex-wrap: wrap;
+                gap: 18px;
+            }
+
+            nav a {
+                margin-left: 0;
+                margin-right: 12px;
+            }
+
+            .game-panel {
+                padding: 18px;
+            }
+
+            .game-banner {
+                height: 200px;
+                border-radius: 12px;
+                margin-bottom: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/" class="logo">eSports<span>Arena</span></a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/tournaments">Tournaments</a>
+        <a href="/players">Players</a>
+        <a href="/teams">Teams</a>
+    </nav>
+</header>
+
+<main>
+
+    <a href="/#games" class="back-link">← Back to Games</a>
+
+    <section class="game-panel">
+
+        <img class="game-banner"
+             th:src="@{/{path}(path=${game.imagePath})}"
+             th:alt="${game.name} + ' banner'">
+
+        <span class="tag">GAME PROFILE</span>
+
+        <h1 th:text="${game.name}">Game Name</h1>
+
+        <p class="description" th:text="${game.description}">
+            Game description
+        </p>
+
+        <!-- PLAYER ROLES -->
+
+        <section class="roles-section">
+
+            <h2>Available Player Roles</h2>
+
+            <p class="roles-subtitle">
+                Choose the role that matches your playstyle.
+            </p>
+
+            <div th:if="${game.name == 'Free Fire'}" class="role-list">
+                <span>Primary Rusher</span>
+                <span>Secondary Rusher</span>
+                <span>Sniper</span>
+                <span>Nader</span>
+                <span>Flanker</span>
+                <span>Supporter</span>
+            </div>
+
+            <div th:if="${game.name == 'BGMI'}" class="role-list">
+                <span>Assaulter</span>
+                <span>Support</span>
+                <span>Sniper</span>
+                <span>In-Game Leader (IGL)</span>
+                <span>Scout</span>
+                <span>Fragger</span>
+            </div>
+
+            <div th:if="${game.name == 'Minecraft Pocket Edition'}"
+                 class="role-list">
+                <span>PvP Player</span>
+                <span>Builder</span>
+                <span>Redstone Builder</span>
+                <span>Hardcore Player</span>
+            </div>
+
+            <div th:if="${game.name == 'Mobile Legends: Bang Bang'}"
+                 class="role-list">
+                <span>Tank</span>
+                <span>Fighter</span>
+                <span>Assassin</span>
+                <span>Mage</span>
+                <span>Marksman</span>
+                <span>Support</span>
+            </div>
+
+        </section>
+
+        <!-- GAME TOURNAMENTS -->
+
+        <section class="tournaments-section">
+
+            <h2>Tournaments for <span th:text="${game.name}">Game</span></h2>
+
+            <p class="roles-subtitle">
+                Explore tournaments available for this game.
+            </p>
+
+            <div th:if="${not #lists.isEmpty(gameTournaments)}"
+                 class="tournament-list">
+
+                <div class="tournament-card"
+                     th:each="tournament : ${gameTournaments}">
+
+                    <h3 th:text="${tournament.tournamentName}">
+                        Tournament Name
+                    </h3>
+
+                    <div class="tournament-info">
+
+                        <p>
+                            Match Mode:
+                            <strong th:text="${tournament.matchMode}">Mode</strong>
+                        </p>
+
+                        <p>
+                            Start Date:
+                            <strong th:text="${#temporals.format(tournament.startDateTime, 'dd MMM yyyy, hh:mm a')}">
+                                Date
+                            </strong>
+                        </p>
+
+                    </div>
+
+                    <span class="status"
+                          th:text="${tournament.status}">
+                        UPCOMING
+                    </span>
+
+                    <a href="/tournaments" class="tournament-link">
+                        View Tournament →
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div th:if="${#lists.isEmpty(gameTournaments)}"
+                 class="empty-message">
+
+                No tournaments are available for this game yet.
+                Check back later!
+
+            </div>
+
+        </section>
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="actions">
+
+            <a href="/tournaments" class="button">
+                View All Tournaments →
+            </a>
+
+            <a href="/players" class="button secondary">
+                Explore Players →
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 eSports Arena · Play. Compete. Win.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | eSports Arena</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6ff;
+            color: #17172b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 440px;
+            background: white;
+            padding: 36px;
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(25, 25, 70, 0.09);
+        }
+
+        .brand {
+            color: #5546e8;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+        }
+
+        h1 {
+            font-size: 29px;
+            margin-bottom: 9px;
+        }
+
+        .subtitle {
+            color: #77788b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 26px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dedfec;
+            border-radius: 9px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #5546e8;
+            box-shadow: 0 0 0 3px rgba(85, 70, 232, 0.1);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #5546e8;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .submit-button:hover {
+            background: #4234ce;
+        }
+
+        .field-error {
+            color: #c62828;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .server-message {
+            color: #c62828;
+            font-size: 13px;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #77788b;
+            font-size: 14px;
+        }
+
+        .login-link a,
+        .back-link {
+            color: #5546e8;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #77788b;
+            font-size: 13px;
+            font-weight: normal;
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 26px 22px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="register-container">
+        <div class="brand">eSPORTS ARENA</div>
+
+        <h1>Create your account</h1>
+
+        <p class="subtitle">
+            Join the arena, build your player profile, and compete with your team.
+        </p>
+
+        <p class="server-message"
+        th:if="${errorMessage}"
+        th:text="${errorMessage}">
+        </p>
+
+        <p th:if="${successMessage}"
+        th:text="${successMessage}"
+        style="color: #16803c; font-size: 13px;
+                margin-bottom: 16px; line-height: 1.5;">
+        </p>
+
+        <form th:action="@{/register}"
+              th:object="${registrationForm}"
+              method="post">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text"
+                       th:field="*{username}"
+                       placeholder="Choose a username"
+                       minlength="3"
+                       maxlength="50"
+                       autocomplete="username"
+                       required>
+
+                <p class="field-error"
+                   th:if="${#fields.hasErrors('username')}"
+                   th:errors="*{username}">
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email"
+                       th:field="*{email}"
+                       placeholder="you@example.com"
+                       maxlength="150"
+                       autocomplete="email"
+                       required>
+
+                <p class="field-error"
+                   th:if="${#fields.hasErrors('email')}"
+                   th:errors="*{email}">
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password"
+                       th:field="*{password}"
+                       placeholder="Create a strong password"
+                       minlength="8"
+                       autocomplete="new-password"
+                       required>
+
+                <p class="field-error"
+                   th:if="${#fields.hasErrors('password')}"
+                   th:errors="*{password}">
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm password</label>
+                <input type="password"
+                       th:field="*{confirmPassword}"
+                       placeholder="Enter your password again"
+                       minlength="8"
+                       autocomplete="new-password"
+                       required>
+
+                <p class="field-error"
+                   th:if="${#fields.hasErrors('confirmPassword')}"
+                   th:errors="*{confirmPassword}">
+                </p>
+            </div>
+
+            <button type="submit" class="submit-button">
+                Create Account
+            </button>
+        </form>
+
+        <p class="login-link">
+            Already have an account? <a th:href="@{/login}">Log in</a>
+        </p>
+
+        <a th:href="@{/}" class="back-link">← Back to home</a>
+    </main>
+</body>
+</html>

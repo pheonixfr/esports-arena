@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Profile Details | eSports Arena</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #7775ff;
+            --background: #0c1020;
+            --panel: #171c30;
+            --border: #292f49;
+            --text: #f5f6ff;
+            --muted: #a2a9c4;
+            --green: #42dba2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            padding: 20px 6%;
+            background: #11162a;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .back-link {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        main {
+            max-width: 900px;
+            margin: auto;
+            padding: 35px 20px 55px;
+        }
+
+        h1 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 22px;
+        }
+
+        .details-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 17px;
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            font-size: 15px;
+            margin-bottom: 15px;
+            color: #c9c7ff;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .detail {
+            min-width: 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: #ffffff05;
+            border: 1px solid var(--border);
+        }
+
+        .detail span {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .detail strong {
+            display: block;
+            font-size: 13px;
+            overflow-wrap: anywhere;
+            line-height: 1.7;
+        }
+
+        .verified {
+            color: var(--green);
+        }
+
+        .unverified {
+            color: #ffcc78;
+        }
+
+        .game-profile {
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 14px;
+            background: #ffffff03;
+        }
+
+        .empty-message {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 17px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            background: var(--primary);
+            color: white;
+            transition: 0.2s;
+        }
+
+        .button:hover {
+            background: #625ff0;
+        }
+
+        .button-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+        }
+
+        .button-secondary:hover {
+            border-color: var(--primary);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px 15px;
+            color: var(--muted);
+            font-size: 11px;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 550px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 25px 15px 40px;
+            }
+
+            .details-card {
+                padding: 18px;
+            }
+
+            .game-profile {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a th:href="@{/}" class="logo">eSports<span>Arena</span></a>
+    <a th:href="@{/profile}" class="back-link">← Back to Profile</a>
+</header>
+
+<main>
+    <h1>All Profile Details</h1>
+    <p class="subtitle">
+        View your account information and all your saved gaming profiles in one place.
+    </p>
+
+    <!-- Account information -->
+    <section class="details-card">
+        <h2>Account Information</h2>
+
+        <div class="details-grid">
+            <div class="detail">
+                <span>Player ID</span>
+                <strong th:text="${'EA-' + player.id}">EA-1</strong>
+            </div>
+
+            <div class="detail">
+                <span>Username</span>
+                <strong th:text="${player.username}">Player Name</strong>
+            </div>
+
+            <div class="detail">
+                <span>Email Address</span>
+                <strong th:text="${player.email}">player@example.com</strong>
+            </div>
+
+            <div class="detail">
+                <span>Email Verification</span>
+
+                <strong th:if="${player.emailVerified}" class="verified">
+                    Verified
+                </strong>
+
+                <strong th:unless="${player.emailVerified}" class="unverified">
+                    Not Verified
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Member Since</span>
+                <strong th:text="${player.createdAt != null ? #temporals.format(player.createdAt, 'dd MMM yyyy') : 'Not available'}">
+                    Date
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Biography</span>
+                <strong th:text="${player.bio != null and !#strings.isEmpty(player.bio) ? player.bio : 'No biography added yet'}">
+                    Biography
+                </strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- All saved game profiles -->
+    <section class="details-card">
+        <h2>My Game Profiles</h2>
+
+        <div th:if="${#lists.isEmpty(gameProfiles)}">
+            <p class="empty-message">
+                You haven't added any game profiles yet.
+            </p>
+
+            <a th:href="@{/profile/game-profiles}" class="button">
+                Add Game Profile →
+            </a>
+        </div>
+
+        <div th:each="game : ${gameProfiles}" class="game-profile">
+            <h3 th:text="${game.gameName}">Game Name</h3>
+
+            <div class="details-grid">
+                <div class="detail">
+                    <span>Game ID / Username</span>
+                    <strong th:text="${#strings.isEmpty(game.gamePlayerId) ? 'Not added' : game.gamePlayerId}">
+                        Game ID
+                    </strong>
+                </div>
+
+                <div class="detail">
+                    <span>In-game Name (IGN)</span>
+                    <strong th:text="${#strings.isEmpty(game.inGameName) ? 'Not added' : game.inGameName}">
+                        IGN
+                    </strong>
+                </div>
+
+                <div class="detail">
+                    <span>Competitive Roles</span>
+                    <strong th:text="${#strings.isEmpty(game.roles) ? 'Not added' : game.roles}">
+                        Roles
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+        <a th:href="@{/profile/game-profiles}"
+           class="button button-secondary">
+            Manage Game Profiles →
+        </a>
+    </section>
+
+    <div class="actions">
+        <a th:href="@{/profile/edit}" class="button">
+            Edit Profile
+        </a>
+
+        <a th:href="@{/profile}" class="button button-secondary">
+            Back to Profile
+        </a>
+    </div>
+</main>
+
+<footer>
+    © 2026 eSports Arena · Play. Compete. Win.
+</footer>
+
+</body>
+</html>

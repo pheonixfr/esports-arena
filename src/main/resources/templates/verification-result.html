@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification | eSports Arena</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6ff;
+            color: #17172b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .result-container {
+            width: 100%;
+            max-width: 460px;
+            padding: 38px 32px;
+            background: white;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(25, 25, 70, 0.09);
+        }
+
+        .status-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .success {
+            background: #e3f8e9;
+            color: #16803c;
+        }
+
+        .failure {
+            background: #ffe8e8;
+            color: #c62828;
+        }
+
+        .brand {
+            color: #5546e8;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+        }
+
+        h1 {
+            font-size: 27px;
+            margin-bottom: 14px;
+        }
+
+        .message {
+            color: #77788b;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 26px;
+        }
+
+        .action-link {
+            display: inline-block;
+            padding: 13px 24px;
+            border-radius: 9px;
+            background: #5546e8;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .action-link:hover {
+            background: #4234ce;
+        }
+
+        .home-link {
+            display: block;
+            margin-top: 20px;
+            color: #77788b;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+            .result-container {
+                padding: 30px 22px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="result-container">
+
+        <div class="brand">eSPORTS ARENA</div>
+
+        <div class="status-icon"
+             th:classappend="${success} ? ' success' : ' failure'"
+             th:text="${success} ? '✓' : '!'">
+            ✓
+        </div>
+
+        <h1 th:text="${title}">Email Verification</h1>
+
+        <p class="message" th:text="${message}">
+            Your verification result will appear here.
+        </p>
+
+        <a th:if="${success}"
+           th:href="@{/login}"
+           class="action-link">
+            Continue to Login
+        </a>
+
+        <a th:unless="${success}"
+           th:href="@{/register}"
+           class="action-link">
+            Back to Registration
+        </a>
+
+        <a th:href="@{/}" class="home-link">
+            ← Back to Home
+        </a>
+
+    </main>
+</body>
+</html>

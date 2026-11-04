@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | eSports Arena</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #7775ff;
+            --background: #0c1020;
+            --panel: #171c30;
+            --border: #292f49;
+            --text: #f5f6ff;
+            --muted: #a2a9c4;
+            --green: #42dba2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 6%;
+            background: #11162a;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .logout-form {
+            display: inline;
+        }
+
+        .logout-button {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 13px;
+            background: transparent;
+            color: white;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        main {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 32px 22px 55px;
+        }
+
+        .page-heading {
+            margin-bottom: 22px;
+        }
+
+        .page-heading h1 {
+            font-size: 26px;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .profile-card {
+            background:
+                radial-gradient(ellipse at top right, #36327555, transparent 45%),
+                var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 27px;
+            overflow: hidden;
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 22px;
+        }
+
+        .avatar {
+            width: 94px;
+            height: 94px;
+            flex-shrink: 0;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #7775ff, #b35dff);
+            font-size: 35px;
+            font-weight: 800;
+            color: white;
+            border: 1px solid #ffffff30;
+        }
+
+        .identity {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .identity h2 {
+            font-size: 25px;
+            overflow-wrap: anywhere;
+            margin: 4px 0 9px;
+        }
+
+        .verified {
+            display: inline-block;
+            color: var(--green);
+            background: #42dba21a;
+            border: 1px solid #42dba244;
+            border-radius: 20px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .unverified {
+            display: inline-block;
+            color: #ffcc78;
+            background: #ffcc7818;
+            border: 1px solid #ffcc7844;
+            border-radius: 20px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .player-meta {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.9;
+            margin-top: 9px;
+            overflow-wrap: anywhere;
+        }
+
+        .bio {
+            color: #c8cce0;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-top: 21px;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+            margin-top: 22px;
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 17px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .button-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background: #625ff0;
+        }
+
+        .button-secondary {
+            background: #ffffff08;
+            border: 1px solid var(--border);
+            color: white;
+        }
+
+        .button-secondary:hover {
+            border-color: var(--primary);
+        }
+
+        .section-title {
+            font-size: 17px;
+            margin: 28px 0 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 13px;
+        }
+
+        .stat-card {
+            padding: 18px 15px;
+            border-radius: 14px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+        }
+
+        .stat-card span {
+            color: var(--muted);
+            font-size: 11px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-card strong {
+            font-size: 24px;
+        }
+
+        .recent-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .recent-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+            padding: 25px 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 650px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 17px 5%;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            main {
+                padding: 25px 15px 40px;
+            }
+
+            .profile-card {
+                padding: 20px;
+            }
+
+            .profile-top {
+                gap: 14px;
+            }
+
+            .avatar {
+                width: 70px;
+                height: 70px;
+                border-radius: 17px;
+                font-size: 27px;
+            }
+
+            .identity h2 {
+                font-size: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 360px) {
+            .profile-top {
+                flex-direction: column;
+            }
+
+            .profile-actions .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <a th:href="@{/}" class="logo">eSports<span>Arena</span></a>
+
+    <nav class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/tournaments}">Tournaments</a>
+        <a th:href="@{/players}">Players</a>
+        <a th:href="@{/teams}">Teams</a>
+        <a th:href="@{/profile}">My Profile</a>
+
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </nav>
+</header>
+
+<main>
+    <div class="page-heading">
+        <h1>My Player Profile</h1>
+        <p>Your identity in the eSports Arena.</p>
+    </div>
+
+    <section class="profile-card">
+        <div class="profile-top">
+            <div class="avatar"
+                 th:text="${#strings.toUpperCase(#strings.substring(player.username, 0, 1))}">
+                P
+            </div>
+
+            <div class="identity">
+                <h2 th:text="${player.username}">Player Name</h2>
+
+                <span th:if="${player.emailVerified}" class="verified">
+                    ✓ Email Verified
+                </span>
+
+                <span th:unless="${player.emailVerified}" class="unverified">
+                    Email Not Verified
+                </span>
+
+                <div class="player-meta">
+                    <div>
+                        Player ID:
+                        <span th:text="${'EA-' + player.id}">EA-1</span>
+                    </div>
+
+                    <div>
+                        Member since:
+                        <span th:text="${#temporals.format(player.createdAt, 'dd MMM yyyy')}">
+                            Date
+                        </span>
+                    </div>
+
+                    <div>
+                        Account email:
+                        <span th:text="${player.email}">player@example.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="bio"
+           th:if="${player.bio != null and !#strings.isEmpty(player.bio)}"
+           th:text="${player.bio}">
+            Player bio
+        </p>
+
+        <p class="bio"
+           th:if="${player.bio == null or #strings.isEmpty(player.bio)}">
+            Your gaming journey starts here. Edit your profile to introduce yourself.
+        </p>
+
+        <div class="profile-actions">
+            <a th:href="@{/profile/edit}" class="button button-secondary">
+                Edit Profile
+            </a>
+
+            <a th:href="@{/profile/details}" class="button button-primary">
+                All Details →
+            </a>
+
+            <a th:href="@{/profile/game-profiles}" class="button button-secondary">
+                My Game Profiles →
+            </a>
+        </div>
+    </section>
+
+    <h2 class="section-title">Career Overview</h2>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span>Tournaments Played</span>
+            <strong>—</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>Tournament Wins</span>
+            <strong>—</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>Total Kills</span>
+            <strong>—</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>Total Points</span>
+            <strong>—</strong>
+        </div>
+    </div>
+
+    <h2 class="section-title">Recent Tournament Results</h2>
+
+    <section class="recent-card">
+        <p>
+            Your completed tournament results will appear here after you
+            participate in competitions and results are recorded.
+        </p>
+    </section>
+</main>
+
+<footer>
+    © 2026 eSports Arena · Play. Compete. Win.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Team | eSports Arena</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f6fc;
+            color: #20243a;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 560px;
+            margin: auto;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #5b5cf0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(20, 25, 60, 0.07);
+        }
+
+        h1 {
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #777d91;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 9px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dfe2ee;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 14px;
+            margin-bottom: 22px;
+            outline: none;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #5b5cf0;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #5b5cf0;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4849d8;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success {
+            background: #e8f8ed;
+            color: #18783a;
+        }
+
+        .error {
+            background: #ffeaea;
+            color: #bd2929;
+        }
+
+        @media (max-width: 500px) {
+            .card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <a href="/teams" class="back">← Back to Teams</a>
+
+    <div class="card">
+        <h1>Create Your Team</h1>
+        <p class="subtitle">Build your squad and get ready to compete.</p>
+
+        <div th:if="${success}" class="message success"
+             th:text="${success}"></div>
+
+        <div th:if="${error}" class="message error"
+             th:text="${error}"></div>
+
+        <form th:action="@{/teams/create}" method="post">
+
+            <label for="teamName">Team Name</label>
+            <input type="text" id="teamName" name="teamName"
+                   placeholder="Enter your team name"
+                   maxlength="50" required>
+
+            <label for="gameName">Select Game</label>
+            <select id="gameName" name="gameName" required>
+                <option value="">Choose your game</option>
+                <option value="Free Fire">Free Fire</option>
+                <option value="BGMI">BGMI</option>
+                <option value="Minecraft PE">Minecraft Pocket Edition</option>
+                <option value="Mobile Legends: Bang Bang">
+                    Mobile Legends: Bang Bang
+                </option>
+            </select>
+
+            <label for="description">Team Description</label>
+            <textarea id="description" name="description"
+                      maxlength="500"
+                      placeholder="Tell players about your team..."></textarea>
+
+            <button type="submit">Create Team</button>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

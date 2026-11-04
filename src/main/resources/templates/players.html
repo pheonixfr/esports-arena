@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Players | eSports Arena</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Inter, sans-serif;
+            color: #18213d;
+            background: #f8faff;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .navbar {
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            background: white;
+            border-bottom: 1px solid #edf0fa;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #6c63ff;
+        }
+
+        nav {
+            display: flex;
+            gap: 26px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #68718d;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #6c63ff;
+        }
+
+        .join {
+            background: #6c63ff;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+            padding: 45px 7% 65px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: #eeecff;
+            color: #6258ee;
+            border-radius: 30px;
+            padding: 9px 14px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: clamp(34px, 5vw, 48px);
+            letter-spacing: -2px;
+            margin: 17px 0 12px;
+        }
+
+        .intro {
+            color: #78819d;
+            line-height: 1.8;
+            max-width: 650px;
+            margin-bottom: 30px;
+        }
+
+        /* Search and filter */
+
+        .filter-box {
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .filter-box input,
+        .filter-box select {
+            flex: 1;
+            min-width: 180px;
+            padding: 14px;
+            border: 1px solid #e4e7f2;
+            border-radius: 11px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            color: #18213d;
+        }
+
+        .filter-box input:focus,
+        .filter-box select:focus {
+            border-color: #6c63ff;
+        }
+
+        .search-btn {
+            background: #6c63ff;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .search-btn:hover {
+            background: #574ee8;
+        }
+
+        .clear-btn {
+            padding: 14px 18px;
+            border-radius: 11px;
+            background: #f0edff;
+            color: #6258ee;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Player directory */
+
+        .directory-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .directory-heading h2 {
+            font-size: 23px;
+        }
+
+        .player-count {
+            color: #78819d;
+            font-size: 13px;
+        }
+
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .player-card {
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 18px;
+            padding: 23px;
+            box-shadow: 0 10px 35px #53618a08;
+        }
+
+        .player-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .avatar {
+            width: 55px;
+            height: 55px;
+            flex-shrink: 0;
+            border-radius: 17px;
+            display: grid;
+            place-items: center;
+            background: #eeecff;
+            color: #6258ee;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .player-card h3 {
+            font-size: 17px;
+            margin-bottom: 5px;
+            overflow-wrap: anywhere;
+        }
+
+        .game-name {
+            color: #6258ee;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .detail {
+            color: #78819d;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+            overflow-wrap: anywhere;
+        }
+
+        .detail strong {
+            color: #39415d;
+        }
+
+        .role-tags {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #f0edff;
+            color: #6258ee;
+            padding: 7px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .empty-state {
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 18px;
+            padding: 45px 20px;
+            text-align: center;
+            color: #78819d;
+            line-height: 1.8;
+        }
+
+        .empty-state h3 {
+            color: #18213d;
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+
+        footer {
+            border-top: 1px solid #e9edf7;
+            background: white;
+            padding: 24px 7%;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            color: #78819d;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .player-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .container {
+                padding-top: 35px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .player-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-box {
+                flex-direction: column;
+            }
+
+            .filter-box input,
+            .filter-box select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <a class="logo" href="/">🎮 eSports <span>Arena</span></a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/tournaments">Tournaments</a>
+        <a class="active" href="/players">Players</a>
+        <a href="/teams">Teams</a>
+    </nav>
+
+    <a class="join" href="/tournaments">Explore Matches ↗</a>
+</header>
+
+<main class="container">
+
+    <span class="eyebrow">✦ PLAYER DIRECTORY</span>
+
+    <h1>Find Your <span style="color:#6c63ff">Players.</span></h1>
+
+    <p class="intro">
+        Discover registered players, explore their gaming profiles
+        and find players who share your favourite games.
+    </p>
+
+    <!-- Search and Game Filter -->
+
+    <form class="filter-box" action="/players" method="get">
+
+        <input type="text"
+               name="search"
+               placeholder="Search players by username..."
+               th:value="${search}">
+
+        <select name="game">
+            <option value="">All Games</option>
+
+            <option th:each="gameItem : ${games}"
+                    th:value="${gameItem.name}"
+                    th:text="${gameItem.name}"
+                    th:selected="${selectedGame == gameItem.name}">
+            </option>
+        </select>
+
+        <button type="submit" class="search-btn">
+            Search
+        </button>
+
+        <a href="/players" class="clear-btn">
+            Clear
+        </a>
+
+    </form>
+
+    <!-- Player List -->
+
+    <section>
+
+        <div class="directory-heading">
+            <h2>Registered Players</h2>
+
+            <span class="player-count">
+                <span th:text="${#lists.size(playerProfiles)}">0</span>
+                gaming profiles found
+            </span>
+        </div>
+
+        <div class="player-grid" th:if="${!#lists.isEmpty(playerProfiles)}">
+
+            <article class="player-card"
+                     th:each="profile : ${playerProfiles}">
+
+                <div class="player-top">
+
+                    <div class="avatar">
+                        <span th:text="${#strings.substring(profile.user.username, 0, 1).toUpperCase()}">P</span>
+                    </div>
+
+                    <div>
+                        <h3 th:text="${profile.user.username}">Username</h3>
+
+                        <span class="game-name"
+                              th:text="${profile.gameName}">
+                            Game Name
+                        </span>
+                    </div>
+
+                </div>
+
+                <p class="detail"
+                   th:if="${profile.inGameName != null and !#strings.isEmpty(profile.inGameName)}">
+                    <strong>In-game name:</strong>
+                    <span th:text="${profile.inGameName}"></span>
+                </p>
+
+                <p class="detail"
+                   th:if="${profile.user.bio != null and !#strings.isEmpty(profile.user.bio)}"
+                   th:text="${profile.user.bio}">
+                </p>
+
+                <div class="role-tags"
+                     th:if="${profile.roles != null and !#strings.isEmpty(profile.roles)}">
+
+                    <span class="tag" th:text="${profile.roles}"></span>
+
+                </div>
+
+            </article>
+
+        </div>
+
+        <!-- Empty State -->
+
+        <div class="empty-state"
+             th:if="${#lists.isEmpty(playerProfiles)}">
+
+            <h3>No Players Found</h3>
+
+            <p>
+                No registered player profiles match your search.
+                Try another username or select a different game.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    <span>© 2026 eSports Arena</span>
+    <span>Play · Compete · Win ✦</span>
+</footer>
+
+</body>
+</html>

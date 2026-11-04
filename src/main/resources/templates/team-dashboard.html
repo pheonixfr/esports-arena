@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Dashboard | eSports Arena</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Inter, sans-serif;
+            background: #f8faff;
+            color: #18213d;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            padding: 22px 7%;
+            background: white;
+            border-bottom: 1px solid #edf0fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #6c63ff;
+        }
+
+        .back {
+            color: #6258ee;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 55px 7%;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: #eeecff;
+            color: #6258ee;
+            padding: 9px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: clamp(30px, 5vw, 44px);
+            margin: 18px 0 10px;
+            letter-spacing: -1.5px;
+        }
+
+        .subtitle {
+            color: #78819d;
+            line-height: 1.8;
+        }
+
+        .team-info {
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .team-info h2 {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .team-info p {
+            color: #78819d;
+            font-size: 14px;
+            margin: 9px 0;
+        }
+
+        .code {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 12px 17px;
+            background: #f0edff;
+            color: #6258ee;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .edit-button {
+            display: inline-block;
+            margin-top: 22px;
+            background: #6c63ff;
+            color: white;
+            padding: 12px 19px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .edit-button:hover {
+            background: #554ce0;
+        }
+
+        .section {
+            margin-top: 35px;
+        }
+
+        .section h2 {
+            font-size: 22px;
+            margin-bottom: 18px;
+        }
+
+        /* TEAM STATISTICS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 17px;
+            padding: 24px;
+        }
+
+        .stat-card p {
+            color: #78819d;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .stat-card h3 {
+            font-size: 32px;
+            margin-top: 10px;
+            color: #6258ee;
+        }
+
+        /* ACHIEVEMENTS */
+        .achievement-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .achievement {
+            background: #eeecff;
+            color: #6258ee;
+            border: 1px solid #dedaff;
+            padding: 13px 17px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 17px;
+            padding: 20px;
+            margin-bottom: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .card p {
+            color: #78819d;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .remove-button {
+            background: #d33b49;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            background: #b72c39;
+        }
+
+        .empty {
+            background: white;
+            border: 1px dashed #d9dcf0;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            color: #78819d;
+        }
+
+        .empty h3 {
+            color: #18213d;
+            margin-bottom: 8px;
+        }
+
+        footer {
+            padding: 24px 7%;
+            background: white;
+            border-top: 1px solid #edf0fa;
+            color: #78819d;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a class="logo" href="/">🎮 eSports <span>Arena</span></a>
+    <a class="back" href="/teams">← Back to Teams</a>
+</header>
+
+<main class="container">
+
+    <span class="eyebrow">✦ TEAM MANAGEMENT</span>
+
+    <h1 th:text="${team.teamName}">Team Name</h1>
+
+    <p class="subtitle">
+        Manage your squad, share your join code, and review player requests.
+    </p>
+
+    <!-- TEAM INFORMATION -->
+    <section class="team-info">
+        <h2>Team Information</h2>
+
+        <p>
+            Game:
+            <strong th:text="${team.gameName}">Game</strong>
+        </p>
+
+        <p>
+            Leader:
+            <strong th:text="${team.leader.username}">Leader</strong>
+        </p>
+
+        <p>
+            Description:
+            <span th:text="${team.description != null and !team.description.isEmpty()
+                ? team.description : 'No description added.'}">
+                Description
+            </span>
+        </p>
+
+        <p>Your Team Join Code:</p>
+
+        <div class="code" th:text="${team.joinCode}">
+            ABC12345
+        </div>
+
+        <br>
+
+        <a class="edit-button"
+           th:href="@{/teams/edit/{id}(id=${team.id})}">
+            ✎ Edit Team Details
+        </a>
+    </section>
+
+    <!-- TEAM STATISTICS -->
+    <section class="section">
+        <h2>Team Statistics</h2>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <p>🏆 Total Wins</p>
+                <h3 th:text="${totalWins}">0</h3>
+            </div>
+
+            <div class="stat-card">
+                <p>🎯 Total Kills</p>
+                <h3 th:text="${totalKills}">0</h3>
+            </div>
+
+            <div class="stat-card">
+                <p>⭐ Total Points</p>
+                <h3 th:text="${totalPoints}">0</h3>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- TEAM ACHIEVEMENTS -->
+    <section class="section">
+        <h2>Team Achievements</h2>
+
+        <div class="achievement-list"
+             th:if="${not #lists.isEmpty(achievements)}">
+
+            <div class="achievement"
+                 th:each="achievement : ${achievements}"
+                 th:text="'🏅 ' + ${achievement}">
+                First Victory
+            </div>
+
+        </div>
+
+        <div class="empty"
+             th:if="${#lists.isEmpty(achievements)}">
+
+            <h3>No achievements yet</h3>
+            <p>Win tournaments and collect kills to unlock achievements.</p>
+
+        </div>
+    </section>
+
+    <!-- TEAM MEMBERS -->
+    <section class="section">
+        <h2>Team Members</h2>
+
+        <div th:if="${not #lists.isEmpty(members)}">
+
+            <div class="card" th:each="member : ${members}">
+
+                <div>
+                    <strong th:text="${member.user.username}">Player</strong>
+
+                    <p th:if="${member.user.id == team.leader.id}">
+                        Team Leader
+                    </p>
+
+                    <p th:unless="${member.user.id == team.leader.id}">
+                        Team Member
+                    </p>
+                </div>
+
+                <form th:if="${member.user.id != team.leader.id}"
+                      th:action="@{/teams/members/{id}/remove(id=${member.id})}"
+                      method="post"
+                      onsubmit="return confirm('Are you sure you want to remove this member?');">
+
+                    <button type="submit" class="remove-button">
+                        Remove
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="empty" th:if="${#lists.isEmpty(members)}">
+            <h3>No members yet</h3>
+            <p>Your team members will appear here.</p>
+        </div>
+    </section>
+
+    <!-- PENDING JOIN REQUESTS -->
+    <section class="section">
+        <h2>Pending Join Requests</h2>
+
+        <div th:if="${not #lists.isEmpty(requests)}">
+
+            <div class="card" th:each="request : ${requests}">
+
+                <div>
+                    <strong th:text="${request.user.username}">
+                        Player Name
+                    </strong>
+
+                    <p>Wants to join your team</p>
+                </div>
+
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+
+                    <form th:action="@{/teams/requests/{id}/approve(id=${request.id})}"
+                          method="post">
+
+                        <button type="submit"
+                                style="background:#16834a;color:white;border:none;
+                                padding:10px 16px;border-radius:9px;
+                                font-weight:700;cursor:pointer;">
+                            Approve
+                        </button>
+
+                    </form>
+
+                    <form th:action="@{/teams/requests/{id}/reject(id=${request.id})}"
+                          method="post">
+
+                        <button type="submit"
+                                style="background:#d33b49;color:white;border:none;
+                                padding:10px 16px;border-radius:9px;
+                                font-weight:700;cursor:pointer;">
+                            Reject
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="empty" th:if="${#lists.isEmpty(requests)}">
+            <h3>No pending requests</h3>
+            <p>New player requests will appear here.</p>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    © 2026 eSports Arena · Play · Compete · Win
+</footer>
+
+</body>
+</html>

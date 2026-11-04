@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tournament Leaderboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 30px;
+            background: #0c1020;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #7775ff;
+        }
+
+        .leaderboard {
+            margin-top: 25px;
+            padding: 20px;
+            background: #171c30;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid #353b55;
+        }
+
+        th {
+            color: #aaa9ff;
+        }
+
+        td:nth-child(2) {
+            text-align: left;
+        }
+
+        .back {
+            color: #aaa9ff;
+            text-decoration: none;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+            color: #aaa;
+        }
+
+        .first {
+            color: #ffd700;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back" href="/tournaments">← Back to Tournaments</a>
+
+    <h1>Tournament Leaderboard</h1>
+
+    <h3 th:text="${tournament.tournamentName}">
+        Tournament Name
+    </h3>
+
+    <div class="leaderboard">
+
+        <table>
+            <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Team</th>
+                <th>Total Wins</th>
+                <th>Total Kills</th>
+                <th>Placement Points</th>
+                <th>Kill Points</th>
+                <th>Total Points</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="entry, status : ${rankings}">
+
+                <td th:text="${status.count}"
+                    th:classappend="${status.count == 1 ? 'first' : ''}">
+                    1
+                </td>
+
+                <td th:text="${entry.key.teamName}">
+                    Team Name
+                </td>
+
+                <td th:text="${entry.value[1]}">0</td>
+
+                <td th:text="${entry.value[0]}">0</td>
+
+                <td th:text="${entry.value[2]}">0</td>
+
+                <td th:text="${entry.value[3]}">0</td>
+
+                <td th:text="${entry.value[2] + entry.value[3]}">
+                    0
+                </td>
+
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(rankings)}">
+                <td colspan="7" class="empty">
+                    No tournament results available yet.
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

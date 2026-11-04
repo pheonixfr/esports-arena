@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Room Details | eSports Arena</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: #0c1020;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 550px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #171c30;
+            border-radius: 14px;
+        }
+
+        h1 {
+            color: #7775ff;
+        }
+
+        .detail {
+            margin: 25px 0;
+            padding: 15px;
+            background: #0c1020;
+            border-radius: 8px;
+        }
+
+        .label {
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        .value {
+            font-size: 20px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: white;
+            background: #7775ff;
+            padding: 12px 20px;
+            border-radius: 7px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Tournament Room Details</h1>
+
+    <h2 th:text="${tournament.tournamentName}">Tournament Name</h2>
+
+    <div class="detail">
+        <div class="label">Room ID</div>
+        <div class="value" th:text="${tournament.roomId}">Room ID</div>
+    </div>
+
+    <div class="detail">
+        <div class="label">Room Password</div>
+        <div class="value" th:text="${tournament.roomPassword}">Room Password</div>
+    </div>
+
+    <a th:href="@{/tournaments}">← Back to Tournaments</a>
+
+</div>
+
+</body>
+</html>

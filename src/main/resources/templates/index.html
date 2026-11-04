@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>eSports Arena | Play. Compete. Win.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #5b5cf0;
+            --dark: #171a2b;
+            --muted: #777e95;
+            --background: #f7f8fc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--dark);
+        }
+
+        a { text-decoration: none; }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 8%;
+            background: white;
+            border-bottom: 1px solid #edf0fa;
+            gap: 22px;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            color: var(--dark);
+            white-space: nowrap;
+        }
+
+        .logo span { color: var(--primary); }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        .nav-links .nav-button {
+            background: var(--primary);
+            color: white;
+            padding: 11px 18px;
+            border-radius: 10px;
+        }
+
+        .nav-links .nav-button:hover { background: #4849dc; }
+
+        .nav-links .register-button,
+        .nav-links .logout-button {
+            background: #171a2b;
+            color: white;
+            padding: 11px 18px;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .nav-links .register-button:hover,
+        .nav-links .logout-button:hover { background: #292c52; }
+
+        .logout-form { display: inline; margin: 0; }
+
+        main { padding: 35px 8% 60px; }
+
+        .hero {
+            padding: 65px 45px;
+            border-radius: 28px;
+            background: linear-gradient(120deg, #171a2b, #292c52);
+            color: white;
+            margin-bottom: 55px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content { max-width: 650px; position: relative; z-index: 1; }
+
+        .hero-label {
+            display: inline-block;
+            color: #c6c6ff;
+            background: #ffffff15;
+            border: 1px solid #ffffff20;
+            padding: 8px 13px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 5vw, 55px);
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+
+        .hero h1 span { color: #9697ff; }
+
+        .hero p {
+            color: #c5c8dc;
+            font-size: 15px;
+            line-height: 1.8;
+            max-width: 530px;
+            margin-bottom: 28px;
+        }
+
+        .hero-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 11px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .hero-button:hover {
+            background: #4849dc;
+            transform: translateY(-2px);
+        }
+
+        .section { margin-bottom: 55px; }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .section-heading p { color: var(--muted); font-size: 13px; }
+
+        .game-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .game-card {
+            padding: 25px;
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 23px;
+            box-shadow: 0 10px 35px #53618a08;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px #53618a15;
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .game-card h3 { font-size: 19px; margin-bottom: 10px; }
+
+        .game-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 18px;
+        }
+
+        .game-card a, .feature-card a {
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .game-card a:hover, .feature-card a:hover { text-decoration: underline; }
+
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 20px;
+            padding: 25px;
+        }
+
+        .feature-card h3 { font-size: 17px; margin-bottom: 10px; }
+
+        .feature-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        footer {
+            padding: 28px 8%;
+            background: white;
+            border-top: 1px solid #edf0fa;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 1000px) {
+            .navbar { padding: 20px 5%; }
+            .nav-links { gap: 15px; }
+            main { padding: 25px 5% 45px; }
+            .feature-cards { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 700px) {
+            .navbar { align-items: flex-start; flex-direction: column; }
+            .nav-links { gap: 14px; }
+            .nav-links a { font-size: 12px; }
+            .game-cards { grid-template-columns: 1fr; }
+            .hero { padding: 45px 25px; }
+        }
+
+        @media (max-width: 400px) {
+            .nav-links { gap: 12px; }
+            .nav-links .nav-button,
+            .nav-links .register-button,
+            .nav-links .logout-button { padding: 9px 11px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <a th:href="@{/}" class="logo">eSports<span>Arena</span></a>
+
+    <nav class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/tournaments}">Tournaments</a>
+        <a th:href="@{/players}">Players</a>
+        <a th:href="@{/teams}">Teams</a>
+
+        <th:block th:if="${loggedInUser == null}">
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/register}" class="register-button">Register</a>
+        </th:block>
+
+        <th:block th:if="${loggedInUser != null}">
+            <a th:href="@{/profile}">My Profile</a>
+
+            <a th:if="${loggedInUserRole == 'ADMIN'}"
+                th:href="@{/admin/dashboard}">
+                Admin Dashboard
+            </a>
+
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </th:block>
+
+        <a th:href="@{/tournaments}" class="nav-button">Explore Arena →</a>
+    </nav>
+</header>
+
+<main>
+
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-label">YOUR COMPETITIVE GAMING HUB</span>
+
+            <h1>Play. Compete.<br><span>Win Together.</span></h1>
+
+            <p>
+                Enter the arena, build your squad, compete in tournaments,
+                and track your journey across your favorite games.
+            </p>
+
+            <a th:href="@{/tournaments}" class="hero-button">
+                Explore Tournaments →
+            </a>
+        </div>
+    </section>
+
+    <section class="section" id="games">
+        <div class="section-heading">
+            <div>
+                <h2>Choose Your Game</h2>
+                <p>Four games. One competitive arena.</p>
+            </div>
+        </div>
+
+        <div class="game-cards">
+            <div th:each="game : ${games}" class="game-card">
+
+                <img th:src="@{/{path}(path=${game.imagePath})}"
+                     th:alt="${game.name}">
+
+                <h3 th:text="${game.name}">Game Name</h3>
+
+                <p th:text="${game.description}">
+                    Game description
+                </p>
+
+                <a th:href="@{/games/{id}(id=${game.id})}">
+                    Explore game →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="tournaments">
+        <div class="section-heading">
+            <div>
+                <h2>Enter the Arena</h2>
+                <p>Everything you need to compete and improve.</p>
+            </div>
+        </div>
+
+        <div class="feature-cards">
+            <div class="feature-card">
+                <h3>Tournaments</h3>
+                <p>
+                    Explore upcoming competitions. Log in when you're ready
+                    to register and compete.
+                </p>
+                <a th:href="@{/tournaments}">View tournaments →</a>
+            </div>
+
+            <div class="feature-card">
+                <h3>Players</h3>
+                <p>
+                    Discover player profiles, game roles, and stats.
+                </p>
+                <a th:href="@{/players}">Explore players →</a>
+            </div>
+
+            <div class="feature-card">
+                <h3>Teams</h3>
+                <p>
+                    Build your squad and follow team performance.
+                </p>
+                <a th:href="@{/teams}">Explore teams →</a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <span>© 2026 eSports Arena</span>
+    <span>Play. Compete. Win.</span>
+</footer>
+
+</body>
+</html>

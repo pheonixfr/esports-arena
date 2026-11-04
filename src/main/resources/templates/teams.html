@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teams | eSports Arena</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f8fc;
+            color: #20243a;
+        }
+
+        header {
+            background: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #6c63ff;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        nav a {
+            color: #555b70;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            color: #6c63ff;
+        }
+
+        .container {
+            width: 86%;
+            max-width: 1200px;
+            margin: 55px auto;
+        }
+
+        .heading {
+            margin-bottom: 35px;
+        }
+
+        .heading h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .heading p {
+            color: #777d91;
+            font-size: 15px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: #6c63ff;
+            color: white;
+        }
+
+        .secondary {
+            background: white;
+            color: #6c63ff;
+            border: 1px solid #dedcff;
+        }
+
+        .join-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 35px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.04);
+        }
+
+        .join-box h2 {
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .join-box p {
+            color: #777d91;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .join-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        input {
+            flex: 1;
+            min-width: 220px;
+            padding: 13px;
+            border: 1px solid #e1e3ed;
+            border-radius: 9px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #6c63ff;
+        }
+
+        .message {
+            padding: 13px 16px;
+            margin-bottom: 20px;
+            border-radius: 9px;
+            font-size: 13px;
+            background: #eeedff;
+            color: #5148c8;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.04);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 9px;
+        }
+
+        .game {
+            display: inline-block;
+            background: #eeedff;
+            color: #6259e8;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #777d91;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .leader {
+            font-size: 12px;
+            color: #555b70;
+        }
+
+        .manage {
+            display: inline-block;
+            margin-top: 18px;
+            background: #6c63ff;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .manage:hover {
+            background: #554ce0;
+        }
+
+        .empty {
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 15px;
+            color: #777d91;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        @media(max-width: 650px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .container {
+                width: 90%;
+                margin-top: 35px;
+            }
+
+            .heading h1 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/" class="logo">eSPORTS ARENA</a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/players">Players</a>
+        <a href="/tournaments">Tournaments</a>
+        <a href="/teams">Teams</a>
+        <a href="/profile" th:if="${isLoggedIn}">Profile</a>
+        <a href="/login" th:unless="${isLoggedIn}">Login</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="heading">
+        <h1>Find Your Team</h1>
+        <p>Create a team, recruit players, or join an existing squad.</p>
+    </section>
+
+    <div th:if="${successMessage}" class="message"
+         th:text="${successMessage}"></div>
+
+    <div th:if="${errorMessage}" class="message"
+         th:text="${errorMessage}"></div>
+
+    <section class="actions" th:if="${isLoggedIn}">
+        <a href="/teams/create" class="btn primary">+ Create a Team</a>
+    </section>
+
+    <section class="join-box" th:if="${isLoggedIn}">
+        <h2>Join a Team</h2>
+        <p>Have a team join code? Enter it below to send a join request.</p>
+
+        <form class="join-form"
+              th:action="@{/teams/request-join}"
+              method="post">
+
+            <input type="text"
+                   name="joinCode"
+                   placeholder="Enter team join code"
+                   maxlength="8"
+                   required>
+
+            <button type="submit" class="btn primary">
+                Request to Join
+            </button>
+        </form>
+    </section>
+
+    <section>
+        <div class="heading">
+            <h1>Available Teams</h1>
+            <p>Explore teams and find your next squad.</p>
+        </div>
+
+        <div class="grid" th:if="${not #lists.isEmpty(teams)}">
+
+            <article class="card" th:each="team : ${teams}">
+
+                <h2 th:text="${team.teamName}">Team Name</h2>
+
+                <span class="game"
+                      th:text="${team.gameName}">
+                    Game
+                </span>
+
+                <p class="description"
+                   th:text="${team.description != null and !team.description.isEmpty()
+                   ? team.description : 'No description available.'}">
+                    Team description
+                </p>
+
+                <p class="leader">
+                    <strong>Team Leader:</strong>
+                    <span th:if="${team.leader != null}"
+                          th:text="${team.leader.username}">
+                        Leader
+                    </span>
+                    <span th:unless="${team.leader != null}">
+                        Not assigned
+                    </span>
+                </p>
+
+                <a class="manage"
+                    th:if="${isLoggedIn and team.leader != null and currentUser != null and team.leader.id == currentUser.id}"
+                    th:href="@{/teams/dashboard/{id}(id=${team.id})}">
+                    Manage Team →
+                </a>
+
+            </article>
+
+        </div>
+
+        <div class="empty" th:if="${#lists.isEmpty(teams)}">
+            <h3>No teams created yet.</h3>
+            <p>Be the first to create a team!</p>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 eSports Arena. All rights reserved.
+</footer>
+
+</body>
+</html>

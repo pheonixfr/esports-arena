@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Game Profile | eSports Arena</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: #f4f6ff;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .back {
+            color: #b7a5ff;
+            text-decoration: none;
+        }
+
+        h1 {
+            margin-top: 28px;
+        }
+
+        .subtitle {
+            color: #aab2ca;
+            line-height: 1.6;
+        }
+
+        .form-card {
+            margin-top: 25px;
+            padding: 25px;
+            background: #151d33;
+            border: 1px solid #293451;
+            border-radius: 14px;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #35415f;
+            border-radius: 8px;
+            background: #0b1020;
+            color: #f4f6ff;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #7657f6;
+        }
+
+        .game-name {
+            color: #b7a5ff;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #7657f6;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #6344e8;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .form-card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back" th:href="@{/profile/game-profiles}">
+        ← Back to Game Profiles
+    </a>
+
+    <h1>Edit Game Profile</h1>
+
+    <p class="subtitle">
+        Update your gaming identity and competitive role.
+    </p>
+
+    <div class="form-card">
+
+        <p>
+            Game:
+            <span class="game-name"
+                  th:text="${gameProfile.gameName}">
+                Game Name
+            </span>
+        </p>
+
+        <form th:action="@{/profile/game-profiles/update/{id}(id=${gameProfile.id})}"
+              method="post">
+
+            <label for="gamePlayerId">Game ID / Username</label>
+
+            <input id="gamePlayerId"
+                   name="gamePlayerId"
+                   type="text"
+                   maxlength="100"
+                   placeholder="Enter your game ID"
+                   th:value="${gameProfile.gamePlayerId}">
+
+            <label for="inGameName">In-game Name (IGN)</label>
+
+            <input id="inGameName"
+                   name="inGameName"
+                   type="text"
+                   maxlength="60"
+                   placeholder="Enter your IGN"
+                   th:value="${gameProfile.inGameName}">
+
+            <label for="roles">Select Your Primary Role</label>
+
+            <select id="roles"
+                    name="roles"
+                    required
+                    th:attr="data-current-role=${gameProfile.roles}">
+                <option value="">Choose your role</option>
+            </select>
+
+            <button type="submit" class="button">
+                Update Game Profile
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    const gameName = document.querySelector(".game-name").textContent.trim();
+    const roleSelect = document.getElementById("roles");
+    const currentRole = roleSelect.dataset.currentRole;
+
+    const gameRoles = {
+        "Free Fire": [
+            "Primary Rusher",
+            "Secondary Rusher",
+            "Sniper",
+            "Nader",
+            "Flanker",
+            "Supporter"
+        ],
+
+        "BGMI": [
+            "Assaulter",
+            "Support",
+            "Sniper",
+            "In-Game Leader (IGL)",
+            "Scout",
+            "Fragger"
+        ],
+
+        "Minecraft PE": [
+            "PvP Player",
+            "Builder",
+            "Redstone Builder",
+            "Hardcore Gamer"
+        ],
+
+        "Mobile Legends: Bang Bang": [
+            "Tank",
+            "Fighter",
+            "Assassin",
+            "Mage",
+            "Marksman",
+            "Support"
+        ]
+    };
+
+    const roles = gameRoles[gameName] || [];
+
+    roles.forEach(function(role) {
+        const option = document.createElement("option");
+        option.value = role;
+        option.textContent = role;
+
+        if (role === currentRole) {
+            option.selected = true;
+        }
+
+        roleSelect.appendChild(option);
+    });
+</script>
+
+</body>
+</html>

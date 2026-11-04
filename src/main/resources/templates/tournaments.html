@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tournaments | eSports Arena</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Inter, sans-serif;
+            color: #18213d;
+            background: #f8faff;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        .navbar {
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            background: white;
+            border-bottom: 1px solid #edf0fa;
+        }
+
+        .logo { font-size: 24px; font-weight: 800; }
+        .logo span { color: #6c63ff; }
+
+        nav { display: flex; gap: 26px; flex-wrap: wrap; }
+
+        nav a {
+            color: #68718d;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        nav a:hover, nav a.active { color: #6c63ff; }
+
+        .join {
+            background: #6c63ff;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+            padding: 65px 7%;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: #eeecff;
+            color: #6258ee;
+            border-radius: 30px;
+            padding: 9px 14px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: clamp(36px, 5vw, 52px);
+            letter-spacing: -2px;
+            margin: 20px 0 14px;
+        }
+
+        .intro {
+            color: #78819d;
+            line-height: 1.8;
+            max-width: 650px;
+        }
+
+        .section-heading {
+            margin: 45px 0 22px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .section-heading p {
+            color: #78819d;
+            font-size: 14px;
+        }
+
+        .create-area {
+            margin-top: 25px;
+        }
+
+        .create-btn {
+            display: inline-block;
+            background: #6c63ff;
+            color: white;
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .create-btn:hover {
+            background: #554ce0;
+            transform: translateY(-2px);
+        }
+
+        /* Tournament action button group */
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #eeecff;
+            padding: 14px;
+            border-radius: 14px;
+            margin: 18px 0;
+        }
+
+        .card-actions .create-btn {
+            margin: 0;
+            padding: 11px 15px;
+            font-size: 12px;
+        }
+
+        /* Green registration buttons */
+        .register-btn {
+            background: #20a464;
+        }
+
+        .register-btn:hover {
+            background: #16834e;
+        }
+
+        .message {
+            padding: 15px 18px;
+            border-radius: 12px;
+            margin: 22px 0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .success {
+            background: #e9f8ef;
+            color: #247a45;
+            border: 1px solid #c9eed6;
+        }
+
+        .error {
+            background: #fff0f0;
+            color: #bd3535;
+            border: 1px solid #f5d0d0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow: 0 10px 35px #53618a08;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            font-size: 26px;
+            background: #f0edff;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            color: #6258ee;
+            background: #f0edff;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-left: 5px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            background: #e9f5ff;
+            color: #2580c4;
+        }
+
+        .card h3 {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+
+        .desc {
+            color: #78819d;
+            font-size: 13px;
+            line-height: 1.8;
+            min-height: 46px;
+            margin-bottom: 15px;
+        }
+
+        .details {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 18px 0;
+            margin-top: 12px;
+            border-top: 1px solid #edf0fa;
+            color: #68718d;
+            font-size: 12px;
+        }
+
+        .date-info {
+            color: #68718d;
+            font-size: 12px;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .register-area {
+            margin-top: 15px;
+        }
+
+        .register-area form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .register-area select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #e1e3ed;
+            border-radius: 9px;
+            background: white;
+            color: #18213d;
+            font-family: inherit;
+            font-size: 13px;
+        }
+
+        .register-area select:focus {
+            outline: none;
+            border-color: #6c63ff;
+        }
+
+        .empty {
+            background: white;
+            border: 1px solid #edf0fa;
+            border-radius: 20px;
+            padding: 45px 25px;
+            text-align: center;
+            color: #78819d;
+        }
+
+        .empty h3 {
+            color: #18213d;
+            margin-bottom: 10px;
+        }
+
+        .note {
+            margin-top: 30px;
+            padding: 16px 18px;
+            border-radius: 13px;
+            background: #eeecff;
+            color: #6258ee;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        footer {
+            border-top: 1px solid #e9edf7;
+            background: white;
+            padding: 24px 7%;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            color: #78819d;
+            font-size: 13px;
+        }
+
+        @media(max-width: 800px) {
+            .grid { grid-template-columns: 1fr; }
+            .container { padding-top: 40px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <a class="logo" href="/">🎮 eSports <span>Arena</span></a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a class="active" href="/tournaments">Tournaments</a>
+        <a href="/players">Players</a>
+        <a href="/teams">Teams</a>
+    </nav>
+
+    <a class="join" href="/register">Join Arena ↗</a>
+</header>
+
+<main class="container">
+
+    <span class="eyebrow">✦ COMPETE FOR GLORY</span>
+
+    <h1>Discover <span style="color:#6c63ff">Tournaments.</span></h1>
+
+    <p class="intro">
+        Find your next challenge, bring your squad, and make every match count.
+        Your competitive journey starts here.
+    </p>
+
+    <div class="message success"
+         th:if="${success}"
+         th:text="${success}">
+    </div>
+
+    <div class="message error"
+         th:if="${error}"
+         th:text="${error}">
+    </div>
+
+    <div class="create-area" th:if="${canCreateTournament}">
+        <a href="/tournaments/create" class="create-btn">
+            + Create Tournament
+        </a>
+    </div>
+
+    <section>
+        <div class="section-heading">
+            <h2>Available Tournaments</h2>
+            <p>Explore competitions hosted in eSports Arena.</p>
+        </div>
+
+        <div class="grid" th:if="${not #lists.isEmpty(tournaments)}">
+
+            <article class="card" th:each="tournament : ${tournaments}">
+
+                <div class="icon">🏆</div>
+
+                <span class="tag"
+                      th:text="${tournament.gameName}">
+                    Game
+                </span>
+
+                <span class="status"
+                      th:text="${tournament.status}">
+                    UPCOMING
+                </span>
+
+                <h3 th:text="${tournament.tournamentName}">
+                    Tournament Name
+                </h3>
+
+                <!-- TOURNAMENT ACTIONS -->
+                <div class="card-actions">
+
+                    <!-- ORGANISER/ADMIN -->
+                    <a th:if="${canCreateTournament}"
+                       th:href="@{/tournaments/{id}/results/manage(id=${tournament.id})}"
+                       class="create-btn">
+                        Manage Results →
+                    </a>
+
+                    <a th:if="${canCreateTournament}"
+                       th:href="@{/tournaments/{id}/room/manage(id=${tournament.id})}"
+                       class="create-btn">
+                        Manage Room →
+                    </a>
+
+                    <!-- PARTICIPANT ROOM ACCESS -->
+                    <a th:if="${tournament.roomId != null
+                            and tournament.startDateTime != null
+                            and !#temporals.createNow().isBefore(
+                                tournament.startDateTime.minusMinutes(5))}"
+                        th:href="@{/tournaments/{id}/room(id=${tournament.id})}"
+                        class="create-btn">
+                        View Room Details →
+                    </a>
+
+                    <!-- PUBLIC LEADERBOARD -->
+                    <a th:if="${tournament.leaderboardPublished}"
+                       th:href="@{/tournaments/{id}/leaderboard(id=${tournament.id})}"
+                       class="create-btn">
+                        View Leaderboard →
+                    </a>
+
+                </div>
+
+                <p class="desc"
+                   th:text="${tournament.description != null and !tournament.description.isEmpty()
+                   ? tournament.description : 'No tournament description available.'}">
+                    Tournament description
+                </p>
+
+                <div class="details">
+                    <span>
+                        👥
+                        <span th:text="${tournament.registrationType}">
+                            TEAM
+                        </span>
+                    </span>
+
+                    <span>
+                        🎮
+                        <span th:text="${tournament.matchMode}">
+                            SQUAD
+                        </span>
+                    </span>
+                </div>
+
+                <p class="date-info">
+                    <strong>Maximum slots:</strong>
+                    <span th:text="${tournament.maxSlots}">48</span>
+                </p>
+
+                <p class="date-info">
+                    <strong>Registration deadline:</strong>
+                    <span th:text="${#temporals.format(tournament.registrationDeadline, 'dd MMM yyyy, hh:mm a')}">
+                        Date
+                    </span>
+                </p>
+
+                <p class="date-info">
+                    <strong>Tournament starts:</strong>
+                    <span th:text="${#temporals.format(tournament.startDateTime, 'dd MMM yyyy, hh:mm a')}">
+                        Date
+                    </span>
+                </p>
+
+                <div class="register-area">
+
+                    <p class="date-info">
+                        <strong>Registered entries:</strong>
+                        <span th:text="${registrationCounts[tournament.id]}">0</span>
+                        /
+                        <span th:text="${tournament.maxSlots}">48</span>
+                    </p>
+
+                    <span class="status"
+                          th:if="${registeredTournaments[tournament.id]}">
+                        Already Registered
+                    </span>
+
+                    <!-- SOLO REGISTRATION -->
+                    <form th:if="${isLoggedIn
+                                  and tournament.registrationType == 'SOLO'
+                                  and !registeredTournaments[tournament.id]
+                                  and registrationCounts[tournament.id] < tournament.maxSlots}"
+                          th:action="@{/tournaments/{id}/register(id=${tournament.id})}"
+                          method="post">
+
+                        <button type="submit" class="create-btn register-btn">
+                            Register Now
+                        </button>
+                    </form>
+
+                    <!-- TEAM REGISTRATION -->
+                    <form th:if="${isLoggedIn
+                                  and tournament.registrationType == 'TEAM'
+                                  and !registeredTournaments[tournament.id]
+                                  and registrationCounts[tournament.id] < tournament.maxSlots}"
+                          th:action="@{/tournaments/{id}/register(id=${tournament.id})}"
+                          method="post">
+
+                        <select name="teamId" required>
+                            <option value="">Select Your Team</option>
+
+                            <option th:each="team : ${myTeams}"
+                                    th:if="${team.gameName == tournament.gameName}"
+                                    th:value="${team.id}"
+                                    th:text="${team.teamName}">
+                            </option>
+                        </select>
+
+                        <button type="submit" class="create-btn register-btn">
+                            Register Team
+                        </button>
+                    </form>
+
+                    <a th:if="${!isLoggedIn}"
+                       href="/login"
+                       class="create-btn">
+                        Login to Register
+                    </a>
+
+                    <span th:if="${registrationCounts[tournament.id] >= tournament.maxSlots}"
+                          class="status">
+                        Slots Full
+                    </span>
+
+                </div>
+            </article>
+
+        </div>
+
+        <div class="empty" th:if="${#lists.isEmpty(tournaments)}">
+            <h3>No tournaments available yet.</h3>
+            <p>New competitions will appear here once organisers create them.</p>
+        </div>
+
+    </section>
+
+    <div class="note">
+        ✨ Tournament listings are connected to the database.
+        Solo and team registration are available for eligible tournaments.
+    </div>
+
+</main>
+
+<footer>
+    <span>© 2026 eSports Arena</span>
+    <span>Play · Compete · Win ✦</span>
+</footer>
+
+</body>
+</html>

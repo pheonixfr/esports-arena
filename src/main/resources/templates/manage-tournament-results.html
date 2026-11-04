@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Tournament Results</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 30px;
+            background: #0c1020;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1, h2 {
+            color: #7775ff;
+        }
+
+        .form-card, .results-card {
+            background: #171c30;
+            padding: 22px;
+            border-radius: 12px;
+            margin-top: 22px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px;
+            box-sizing: border-box;
+            border: 1px solid #353b55;
+            border-radius: 6px;
+            background: #0c1020;
+            color: white;
+        }
+
+        button {
+            grid-column: 1 / -1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #7775ff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .publish-form {
+            display: block;
+            margin: 15px 0;
+        }
+
+        .publish-btn {
+            width: auto;
+            padding: 12px 22px;
+            background: #238636;
+        }
+
+        .published {
+            color: #7ee787;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #353b55;
+        }
+
+        .message {
+            color: #7ee787;
+            margin-top: 12px;
+        }
+
+        .error {
+            color: #ff7777;
+            margin-top: 12px;
+        }
+
+        .back {
+            color: #aaa9ff;
+            text-decoration: none;
+        }
+
+        @media (max-width: 650px) {
+            body {
+                padding: 15px;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .results-card {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back" href="/tournaments">← Back to Tournaments</a>
+
+    <h1>Manage Tournament Results</h1>
+
+    <h3 th:text="${tournament.tournamentName}">Tournament Name</h3>
+
+    <!-- Publish Leaderboard -->
+    <form class="publish-form"
+          th:action="@{/tournaments/{id}/results/publish(id=${tournament.id})}"
+          method="post"
+          th:unless="${tournament.leaderboardPublished}"
+          onsubmit="return confirm('Are you sure you want to publish the leaderboard?');">
+
+        <button type="submit" class="publish-btn">
+            Publish Leaderboard →
+        </button>
+
+    </form>
+
+    <p class="published" th:if="${tournament.leaderboardPublished}">
+        Leaderboard Published ✓
+    </p>
+
+    <p class="message" th:if="${success}" th:text="${success}"></p>
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <div class="form-card">
+
+        <h2>Enter Match Result</h2>
+
+        <form th:action="@{/tournaments/{id}/results/save(id=${tournament.id})}"
+              method="post">
+
+            <div>
+                <label>Team</label>
+                <select name="teamId" required>
+                    <option value="">Select Team</option>
+                    <option th:each="team : ${teams}"
+                            th:value="${team.id}"
+                            th:text="${team.teamName}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label>Match Number</label>
+                <input type="number" name="matchNumber"
+                       min="1" required>
+            </div>
+
+            <div>
+                <label>Position</label>
+                <input type="number" name="position"
+                       min="1" max="12" required>
+            </div>
+
+            <div>
+                <label>Kills</label>
+                <input type="number" name="kills"
+                       min="0" value="0" required>
+            </div>
+
+            <div>
+                <label>Placement Points</label>
+                <input type="number" name="placementPoints"
+                       min="0" required>
+            </div>
+
+            <div>
+                <label>Kill Points</label>
+                <input type="number" name="killPoints"
+                       min="0" required>
+            </div>
+
+            <button type="submit">Save Match Result</button>
+
+        </form>
+    </div>
+
+    <div class="results-card">
+
+        <h2>Entered Results</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Match</th>
+                <th>Team</th>
+                <th>Position</th>
+                <th>Kills</th>
+                <th>Placement Points</th>
+                <th>Kill Points</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="result : ${results}">
+                <td th:text="${result.matchNumber}"></td>
+                <td th:text="${result.team.teamName}"></td>
+                <td th:text="${result.position}"></td>
+                <td th:text="${result.kills}"></td>
+                <td th:text="${result.placementPoints}"></td>
+                <td th:text="${result.killPoints}"></td>
+                <td th:text="${result.totalPoints}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(results)}">
+                <td colspan="7">No results entered yet.</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

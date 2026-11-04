@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Tournament | eSports Arena</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, sans-serif;
+            background: #f7f8fc;
+            color: #20243a;
+        }
+
+        header {
+            background: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            color: #6c63ff;
+            font-size: 22px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        header a.back {
+            color: #6c63ff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 90%;
+            margin: 45px auto;
+        }
+
+        .heading {
+            margin-bottom: 28px;
+        }
+
+        .heading h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .heading p {
+            color: #777d91;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .form-card {
+            background: white;
+            padding: 32px;
+            border-radius: 18px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.04);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #e1e3ed;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            background: white;
+            color: #20243a;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #6c63ff;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .hint {
+            color: #999;
+            font-size: 11px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        button, .cancel {
+            padding: 13px 22px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+        }
+
+        button {
+            background: #6c63ff;
+            color: white;
+        }
+
+        button:hover {
+            background: #554ce0;
+        }
+
+        .cancel {
+            background: #f0f1f7;
+            color: #555b70;
+        }
+
+        .message {
+            padding: 13px;
+            border-radius: 9px;
+            margin-bottom: 20px;
+            background: #ffecec;
+            color: #c03939;
+            font-size: 13px;
+        }
+
+        @media(max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .form-card {
+                padding: 22px;
+            }
+
+            .heading h1 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/" class="logo">eSPORTS ARENA</a>
+    <a href="/tournaments" class="back">← Back to Tournaments</a>
+</header>
+
+<main class="container">
+
+    <section class="heading">
+        <h1>Create a Tournament</h1>
+        <p>Set up your competition and invite players to participate.</p>
+    </section>
+
+    <div class="form-card">
+
+        <div th:if="${error}" class="message" th:text="${error}"></div>
+
+        <form th:action="@{/tournaments/create}" method="post">
+
+            <div class="form-grid">
+
+                <div class="field full">
+                    <label for="tournamentName">Tournament Name *</label>
+                    <input type="text"
+                           id="tournamentName"
+                           name="tournamentName"
+                           placeholder="Enter tournament name"
+                           maxlength="150"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label for="gameName">Game *</label>
+                    <select id="gameName" name="gameName" required>
+                        <option value="">Select Game</option>
+                        <option value="Free Fire">Free Fire</option>
+                        <option value="BGMI">BGMI</option>
+                        <option value="Minecraft Pocket Edition">Minecraft Pocket Edition</option>
+                        <option value="Mobile Legends: Bang Bang">Mobile Legends: Bang Bang</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="registrationType">Registration Type *</label>
+                    <select id="registrationType" name="registrationType" required>
+                        <option value="">Select Type</option>
+                        <option value="SOLO">Solo</option>
+                        <option value="TEAM">Team</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="matchMode">Match Mode *</label>
+                    <select id="matchMode" name="matchMode" required>
+                        <option value="">Select Mode</option>
+                        <option value="Solo">Solo</option>
+                        <option value="Duo">Duo</option>
+                        <option value="Squad">Squad</option>
+                        <option value="Custom">Custom</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="maxSlots">Maximum Slots *</label>
+                    <input type="number"
+                           id="maxSlots"
+                           name="maxSlots"
+                           min="2"
+                           max="1000"
+                           placeholder="Example: 48"
+                           required>
+                </div>
+
+                <div class="field full">
+                    <label for="description">Tournament Description</label>
+                    <textarea id="description"
+                              name="description"
+                              maxlength="2000"
+                              placeholder="Explain the tournament, format and important information..."></textarea>
+                </div>
+
+                <div class="field full">
+                    <label for="bannerImage">Banner Image Path (Optional)</label>
+                    <input type="text"
+                           id="bannerImage"
+                           name="bannerImage"
+                           placeholder="Example: images/tournament-banner.png">
+                    <span class="hint">We'll add image uploading later.</span>
+                </div>
+
+                <div class="field">
+                    <label for="registrationDeadline">Registration Deadline *</label>
+                    <input type="datetime-local"
+                           id="registrationDeadline"
+                           name="registrationDeadline"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label for="startDateTime">Tournament Start Date & Time *</label>
+                    <input type="datetime-local"
+                           id="startDateTime"
+                           name="startDateTime"
+                           required>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button type="submit">Create Tournament →</button>
+                <a href="/tournaments" class="cancel">Cancel</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+</html>

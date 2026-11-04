@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Team | eSports Arena</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f8fc;
+            color: #20243a;
+        }
+
+        header {
+            background: white;
+            padding: 20px 7%;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #6c63ff;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 650px;
+            margin: 60px auto;
+        }
+
+        .form-card {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.04);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #777d91;
+            font-size: 14px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e1e3ed;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 14px;
+            margin-bottom: 22px;
+            outline: none;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #6c63ff;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        .game-info {
+            background: #f3f2ff;
+            color: #6259e8;
+            padding: 13px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button, .cancel {
+            padding: 13px 20px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        button {
+            background: #6c63ff;
+            color: white;
+        }
+
+        button:hover {
+            background: #554ce0;
+        }
+
+        .cancel {
+            background: #f0f1f6;
+            color: #555b70;
+        }
+
+        .message {
+            background: #fff0f0;
+            color: #d14343;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        @media(max-width: 550px) {
+            .form-card {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="/" class="logo">eSPORTS ARENA</a>
+</header>
+
+<main class="container">
+
+    <section class="form-card">
+
+        <h1>Edit Your Team</h1>
+
+        <p class="subtitle">
+            Update your team's information. Only the team leader can make these changes.
+        </p>
+
+        <div class="message"
+             th:if="${error}"
+             th:text="${error}">
+        </div>
+
+        <div class="game-info">
+            Game:
+            <span th:text="${team.gameName}">Game Name</span>
+        </div>
+
+        <form th:action="@{/teams/edit/{id}(id=${team.id})}"
+              method="post">
+
+            <label for="teamName">Team Name</label>
+
+            <input type="text"
+                   id="teamName"
+                   name="teamName"
+                   th:value="${team.teamName}"
+                   maxlength="50"
+                   required>
+
+            <label for="description">Team Description</label>
+
+            <textarea id="description"
+                      name="description"
+                      maxlength="500"
+                      placeholder="Write something about your team..."
+                      th:text="${team.description}"></textarea>
+
+            <div class="buttons">
+
+                <button type="submit">
+                    Save Changes
+                </button>
+
+                <a class="cancel"
+                   th:href="@{/teams/dashboard/{id}(id=${team.id})}">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+</body>
+</html>

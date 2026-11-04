@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | eSports Arena</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: #f5f7ff;
+        }
+
+        header {
+            padding: 18px 7%;
+            background: #111831;
+            border-bottom: 1px solid #273252;
+        }
+
+        header a {
+            color: #b7a5ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            width: min(100% - 32px, 600px);
+            margin: 45px auto;
+        }
+
+        .card {
+            background: #131c35;
+            border: 1px solid #293657;
+            border-radius: 18px;
+            padding: 28px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #aab5d0;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            margin: 20px 0 8px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            border-radius: 9px;
+            border: 1px solid #394767;
+            background: #0b1228;
+            color: white;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .hint {
+            color: #9ba8c5;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .email {
+            padding: 13px;
+            background: #0b1228;
+            border: 1px solid #293657;
+            border-radius: 9px;
+            color: #aab5d0;
+            overflow-wrap: anywhere;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        button, .cancel {
+            padding: 12px 18px;
+            border-radius: 9px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        button {
+            border: none;
+            background: #8065ff;
+            color: white;
+            flex: 1;
+        }
+
+        .cancel {
+            border: 1px solid #394767;
+            color: white;
+        }
+
+        button:hover {
+            background: #6c50ed;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 21px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a th:href="@{/profile}">← Back to My Profile</a>
+</header>
+
+<main>
+    <section class="card">
+        <h1>Edit Profile</h1>
+
+        <p class="subtitle">
+            Personalize your eSports Arena player profile.
+            Your email address cannot be changed here.
+        </p>
+        
+        <p th:if="${error}" th:text="${error}"
+        style="color: #ff7777; margin-bottom: 16px;"></p>
+
+        <p th:if="${success}" th:text="${success}"
+        style="color: #6ee7a0; margin-bottom: 16px;"></p>
+
+
+        <form th:action="@{/profile/edit}" method="post">
+
+            <label for="username">Player Username</label>
+            
+            <input
+                type="text"
+                id="username"
+                name="username"
+                th:value="${enteredUsername != null ? enteredUsername : player.username}"
+                minlength="3"
+                maxlength="50"
+                required
+                autocomplete="nickname">
+
+
+            <label for="bio">About You</label>
+            
+                <textarea
+                    id="bio"
+                    name="bio"
+                    maxlength="300"
+                    placeholder="Tell other players about your play style..."
+                    th:text="${enteredBio != null ? enteredBio : player.bio}"></textarea>
+
+
+            <p class="hint">Maximum 300 characters.</p>
+
+            <label>Email Address</label>
+            <div class="email" th:text="${player.email}"></div>
+
+            <div class="buttons">
+                <button type="submit">Save Changes</button>
+                <a class="cancel" th:href="@{/profile}">Cancel</a>
+            </div>
+
+        </form>
+    </section>
+</main>
+
+</body>
+</html>
